@@ -10,6 +10,7 @@ interface FollowUpInputProps {
   onSubmit: (text: string, method: 'text' | 'voice') => void;
   onSkip: () => void;
   showSkip?: boolean;
+  submitLabel?: string;
 }
 
 export function FollowUpInput({
@@ -17,6 +18,7 @@ export function FollowUpInput({
   onSubmit,
   onSkip,
   showSkip = true,
+  submitLabel = '次へ',
 }: FollowUpInputProps) {
   const [text, setText] = useState('');
   const [inputMethod, setInputMethod] = useState<'text' | 'voice'>('text');
@@ -53,7 +55,7 @@ export function FollowUpInput({
           disabled={text.trim().length === 0}
           className="flex-1"
         >
-          次へ
+          {submitLabel}
         </Button>
       </div>
     </div>

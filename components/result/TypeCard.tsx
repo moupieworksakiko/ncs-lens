@@ -18,7 +18,7 @@ export function TypeCard({ nickname, age, typeName, typeCode }: TypeCardProps) {
           <Sparkles className="h-5 w-5" />
         </div>
         <p className="text-muted-foreground">
-          {nickname}くん（{age}歳）は
+          {nickname}さん（{age}歳）は
         </p>
         <h2 className="text-2xl font-bold text-foreground">{typeName}</h2>
         <p className="text-sm text-muted-foreground">{typeCode} 型</p>

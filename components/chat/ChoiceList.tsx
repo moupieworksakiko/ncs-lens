@@ -10,10 +10,11 @@ interface ChoiceListProps {
   choices: Choice[];
   maxSelection: number;
   onSubmit: (selected: string[]) => void;
+  initialSelected?: string[];
 }
 
-export function ChoiceList({ choices, maxSelection, onSubmit }: ChoiceListProps) {
-  const [selected, setSelected] = useState<string[]>([]);
+export function ChoiceList({ choices, maxSelection, onSubmit, initialSelected }: ChoiceListProps) {
+  const [selected, setSelected] = useState<string[]>(initialSelected ?? []);
 
   const toggle = (choice: Choice) => {
     if (choice.exclusive) {

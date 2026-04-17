@@ -22,6 +22,7 @@ interface AssessmentState {
   parentWish: string;
   result: AnalysisResult | null;
   isAnalyzing: boolean;
+  analysisError: string | null;
 }
 
 interface AssessmentContextValue extends AssessmentState {
@@ -32,6 +33,7 @@ interface AssessmentContextValue extends AssessmentState {
   goToPrev: () => void;
   setResult: (result: AnalysisResult) => void;
   setIsAnalyzing: (v: boolean) => void;
+  setAnalysisError: (error: string | null) => void;
   getAssessmentData: () => AssessmentData;
   reset: () => void;
 }
@@ -45,6 +47,7 @@ const initialState: AssessmentState = {
   parentWish: '',
   result: null,
   isAnalyzing: false,
+  analysisError: null,
 };
 
 export function AssessmentProvider({ children }: { children: ReactNode }) {
@@ -90,6 +93,10 @@ export function AssessmentProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, isAnalyzing: v }));
   }, []);
 
+  const setAnalysisError = useCallback((error: string | null) => {
+    setState((s) => ({ ...s, analysisError: error }));
+  }, []);
+
   const getAssessmentData = useCallback((): AssessmentData => {
     return {
       sessionId: crypto.randomUUID(),
@@ -115,6 +122,7 @@ export function AssessmentProvider({ children }: { children: ReactNode }) {
         goToPrev,
         setResult,
         setIsAnalyzing,
+        setAnalysisError,
         getAssessmentData,
         reset,
       }}

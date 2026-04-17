@@ -2,45 +2,66 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Loader2, RotateCcw, Sparkles } from 'lucide-react';
+import { Loader2, RotateCcw, Sparkles, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { buttonVariants } from '@/components/ui/button';
 import { useAssessment } from '@/contexts/AssessmentContext';
 import { RadarChart } from '@/components/result/RadarChart';
 import { TypeCard } from '@/components/result/TypeCard';
 import { CategoryBreakdown } from '@/components/result/CategoryBreakdown';
 import { PersonalComment } from '@/components/result/PersonalComment';
-import { cn } from '@/lib/utils';
 
 export default function ResultPage() {
   const router = useRouter();
-  const { child, result, isAnalyzing, reset } = useAssessment();
+  const { child, result, isAnalyzing, analysisError, reset } = useAssessment();
 
-  // 不完全な状態でアクセスされた場合リダイレクト
   useEffect(() => {
     if (!child && !isAnalyzing) {
       router.replace('/');
     }
   }, [child, isAnalyzing, router]);
 
-  if (isAnalyzing || !result) {
+  // ローディング中
+  if (isAnalyzing) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center px-4 gap-4">
         <Loader2 className="h-10 w-10 animate-spin text-primary" />
         <p className="text-lg font-medium text-foreground">
-          {child?.nickname ?? 'お子さん'}の個性の構成元素を
-          <br />
-          整えています...
+          「{child?.nickname ?? ''}」さんの個性を分析しています...
         </p>
         <p className="text-sm text-muted-foreground">
-          少しだけお待ちください
+          少しだけお待ちください（10〜20秒ほど）
         </p>
       </div>
     );
   }
 
-  if (!child) return null;
+  // エラー発生
+  if (analysisError) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center px-4 gap-4">
+        <AlertCircle className="h-10 w-10 text-destructive" />
+        <p className="text-lg font-medium text-foreground">
+          分析できませんでした
+        </p>
+        <p className="text-sm text-muted-foreground text-center">
+          {analysisError}
+        </p>
+        <div className="flex gap-3">
+          <Button variant="outline" onClick={() => router.push('/assessment')}>
+            質問に戻る
+          </Button>
+          <Button onClick={() => {
+            reset();
+            router.push('/');
+          }}>
+            最初からやり直す
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!result || !child) return null;
 
   const handleReset = () => {
     reset();
