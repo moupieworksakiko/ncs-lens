@@ -92,6 +92,7 @@ export default function ResultPage() {
         <PersonalComment
           comment={result.personalComment}
           hints={result.growthHints}
+          nickname={child.nickname}
         />
 
         <div className="pt-4 pb-8">

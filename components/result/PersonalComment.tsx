@@ -6,23 +6,29 @@ import { MessageCircle, Lightbulb } from 'lucide-react';
 interface PersonalCommentProps {
   comment: string;
   hints: string[];
+  nickname: string;
 }
 
-export function PersonalComment({ comment, hints }: PersonalCommentProps) {
+export function PersonalComment({ comment, hints, nickname }: PersonalCommentProps) {
+  // コメント中の名前に「さん」がない場合は付与
+  const displayComment = comment.includes(`${nickname}さん`)
+    ? comment
+    : comment.replaceAll(nickname, `${nickname}さん`);
+
   return (
-    <div className="space-y-4">
-      <Card>
-        <CardContent className="pt-5 space-y-2">
+    <div className="space-y-3">
+      <Card className="py-3 gap-2">
+        <CardContent className="space-y-2">
           <div className="flex items-center gap-2 text-primary">
             <MessageCircle className="h-4 w-4" />
             <h3 className="font-medium text-sm">パーソナルコメント</h3>
           </div>
-          <p className="text-sm leading-relaxed text-foreground">{comment}</p>
+          <p className="text-sm leading-relaxed text-foreground">{displayComment}</p>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardContent className="pt-5 space-y-2">
+      <Card className="py-3 gap-2">
+        <CardContent className="space-y-2">
           <div className="flex items-center gap-2 text-accent-foreground">
             <Lightbulb className="h-4 w-4" />
             <h3 className="font-medium text-sm">伸びしろヒント</h3>
