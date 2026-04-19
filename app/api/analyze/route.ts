@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import Anthropic from '@anthropic-ai/sdk';
 import { getAnthropicClient, getModel } from '@/lib/anthropic';
 import { buildSystemPrompt, buildUserMessage } from '@/lib/scoring-prompt';
 import type { AnalyzeResponse, AnalysisResult } from '@/lib/types';
@@ -24,6 +25,20 @@ const analysisResultSchema = z.object({
   personalComment: z.string(),
   growthHints: z.array(z.string()).min(1).max(5),
 });
+
+function extractJSON(text: string): string {
+  // ```json ... ``` ブロックからJSONを抽出
+  const codeBlockMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (codeBlockMatch) {
+    return codeBlockMatch[1].trim();
+  }
+  // 先頭/末尾の空白や余分なテキストを除去して { ... } を抽出
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+  if (jsonMatch) {
+    return jsonMatch[0];
+  }
+  return text.trim();
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -53,10 +68,14 @@ export async function POST(request: NextRequest) {
       throw new Error('No text response from API');
     }
 
+    const rawText = textBlock.text;
+    const jsonText = extractJSON(rawText);
+
     let parsed: unknown;
     try {
-      parsed = JSON.parse(textBlock.text);
+      parsed = JSON.parse(jsonText);
     } catch {
+      console.error('Failed to parse JSON. Raw response:', rawText.slice(0, 500));
       throw new Error('API response was not valid JSON');
     }
 
@@ -64,6 +83,18 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true, result } satisfies AnalyzeResponse);
   } catch (error) {
+    // Anthropic SDK の認証エラーを明確に区別
+    if (error instanceof Anthropic.AuthenticationError) {
+      console.error('Anthropic authentication failed. Check ANTHROPIC_API_KEY.');
+      return NextResponse.json(
+        {
+          ok: false,
+          error: 'APIの認証に失敗しました。管理者にお問い合わせください。',
+        } satisfies AnalyzeResponse,
+        { status: 500 }
+      );
+    }
+
     console.error('Analysis error:', error);
     return NextResponse.json(
       {

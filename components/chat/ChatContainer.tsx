@@ -158,6 +158,12 @@ export function ChatContainer() {
   };
 
   const answerSummary = getAnswerSummary();
+  const pendingChoiceSummary =
+    question.choices && pendingChoices.length > 0
+      ? pendingChoices
+          .map((id) => question.choices!.find((c) => c.id === id)?.label ?? id)
+          .join('、')
+      : null;
 
   return (
     <div className="flex flex-col h-full">
@@ -188,6 +194,15 @@ export function ChatContainer() {
             <div className="bg-primary/10 text-foreground rounded-2xl rounded-tr-sm px-4 py-3 max-w-[85%]">
               <p className="text-xs text-muted-foreground mb-1">前回の回答:</p>
               <p className="text-sm">{answerSummary}</p>
+            </div>
+          </div>
+        )}
+
+        {/* 選択式回答の結果（深掘り前） */}
+        {pendingChoiceSummary && subStep === 'follow_up' && (
+          <div className="flex justify-end">
+            <div className="bg-primary/10 text-foreground rounded-2xl rounded-tr-sm px-4 py-3 max-w-[85%]">
+              <p className="text-sm">{pendingChoiceSummary}</p>
             </div>
           </div>
         )}
