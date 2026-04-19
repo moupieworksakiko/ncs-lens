@@ -59,7 +59,12 @@ ${typeList}
   "growthHints": ["...", "..."]
 }
 
-JSONのみを返し、前後に説明文を一切つけないこと。`;
+重要な制約：
+- JSONのみを返し、前後に説明文を一切つけないこと
+- \`\`\`json などのコードブロック記法で囲まないこと。純粋なJSONだけを出力すること
+- reasoning は各要素30文字以内の簡潔な日本語にすること
+- personalComment は200文字以内にすること
+- growthHints は各50文字以内にすること`;
 }
 
 export function buildUserMessage(assessment: AssessmentData): string {
