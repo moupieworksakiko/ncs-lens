@@ -13,9 +13,9 @@ export default function LandingPage() {
             <span className="text-2xl font-bold">NCS Lens</span>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            子どもの&quot;らしさ&quot;を
+            子どもの&quot;個性&quot;を見つける
             <br />
-            見つめる、5分のインタビュー
+            5分のインタビュー
           </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
             学力じゃない、

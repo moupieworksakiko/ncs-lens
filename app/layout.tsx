@@ -10,9 +10,9 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: "NCS Lens - 子どもの「らしさ」を見つめる",
+  title: "NCS Lens - 子どもの「個性」を見つける",
   description:
-    "非認知能力の自己発見アセスメント。親がAIとの対話で、お子さんの「6つの構成元素」を可視化します。",
+    "非認知能力の自己発見アセスメント。親がAIとの対話で、お子さんの「6つの個性のエレメント」を可視化します。",
 };
 
 export default function RootLayout({

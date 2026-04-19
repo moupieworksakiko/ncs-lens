@@ -4,7 +4,7 @@ export const QUESTIONS: Question[] = [
   // Q1: 基本情報
   {
     id: 'q1',
-    text: 'こんにちは。これから、お子さんの「個性の構成元素」を一緒に見つけていきますね。まず、お子さんのお名前（ニックネームでOK）と年齢を教えてください。',
+    text: 'こんにちは。これから、お子さんの「個性のエレメント」を一緒に見つけていきますね。まず、お子さんのお名前（ニックネームでOK）と年齢を教えてください。',
     inputType: 'basic_info',
     primaryElements: [],
     secondaryElements: [],
