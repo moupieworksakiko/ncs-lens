@@ -64,7 +64,8 @@ ${typeList}
 - \`\`\`json などのコードブロック記法で囲まないこと。純粋なJSONだけを出力すること
 - reasoning は各要素30文字以内の簡潔な日本語にすること
 - personalComment は200文字以内にすること
-- growthHints は各50文字以内にすること`;
+- growthHints は各50文字以内にすること
+- 子どもの名前には必ず「さん」だけを付けること。「くん」「ちゃん」は使わない（例: ○「とわさん」 ×「とわくん」「とわちゃん」）`;
 }
 
 export function buildUserMessage(assessment: AssessmentData): string {

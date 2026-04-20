@@ -93,6 +93,7 @@ export default function ResultPage() {
           comment={result.personalComment}
           hints={result.growthHints}
           nickname={child.nickname}
+          scores={result.scores}
         />
 
         <div className="pt-4 pb-8">
